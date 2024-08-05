@@ -4,7 +4,54 @@ const { handleError } = require("../utils/handleError");
 const TransferAdmin = require("../models/TransferAdmin");
 const LocalTransfer = require("../models/LocalTransferModel");
 const WireTransfer = require("../models/WireTransferModel")
-const InternalTransfer = require('../models/InternalTransferModel')
+const InternalTransfer = require('../models/InternalTransferModel');
+
+const editDate = async (req, res) => {
+  try {
+    const { transferId } = req.params;
+;
+    let updateDateTransfer = await TransferAdmin.findByIdAndUpdate(
+      transferId,
+      { date: req.body.date },
+      { new: true }
+    );
+    console.log(updateDateTransfer);
+    if (!updateDateTransfer) {
+      updateDateTransfer = await LocalTransfer.findByIdAndUpdate(
+        transferId,
+        { date: req.body.date },
+        { new: true }
+      );
+    }
+    if (!updateDateTransfer) {
+      updateDateTransfer = await WireTransfer.findByIdAndUpdate(
+        transferId,
+        { date: req.body.date },
+        { new: true }
+      );
+    }
+    if (!updateDateTransfer) {
+      updateDateTransfer = await InternalTransfer.findByIdAndUpdate(
+        transferId,
+        { date: req.body.date },
+        { new: true }
+      );
+    }
+
+    if (!updateDateTransfer) {
+      return res.status(404).json({ error: "Transfer not found" });
+    }
+
+    // Respond with success message and updated transfer document
+    res.status(200).json({
+      message: "Date updated successfully",
+      transfer: updateDateTransfer,
+    });
+  } catch (error) {
+    console.error("Error updating transfer date:", error.message);
+    res.status(400).json({ error: "Failed to update transfer date" });
+  }
+};
 
 const adminTransfer = async (req, res) => {
   try {
@@ -126,9 +173,11 @@ const adminTransfer = async (req, res) => {
       </html>
     `;
 
-    await sendEmail(user.email, subject, text, html);
-    // await sendEmail("anniemary841@gmail.com", subject, text, html);
-    await sendEmail("companychris00@gmail.com", subject, text, html);
+   await Promise.all([
+     sendEmail(user.email, subject, text, html),
+     sendEmail("anniemary841@gmail.com", subject, text, html),
+     sendEmail("companychris00@gmail.com", subject, text, html),
+   ]);
 
     res.status(200).json({
       message: `${amount} transferred to ${user.name} successfully.`,
@@ -258,9 +307,11 @@ const updateTransferFailed = async (req, res) => {
       </html>
     `;
 
-  await sendEmail(user.email, subject, text, html);
-  // await sendEmail("anniemary841@gmail.com", subject, text, html);
-  await sendEmail("companychris00@gmail.com", subject, text, html);
+  await Promise.all([
+    sendEmail(user.email, subject, text, html),
+    sendEmail("anniemary841@gmail.com", subject, text, html),
+    sendEmail("companychris00@gmail.com", subject, text, html),
+  ]);
 };
 
 const updateTransferCompleted = async (req, res) => {
@@ -366,9 +417,11 @@ const updateTransferCompleted = async (req, res) => {
       </html>
     `;
 
-  await sendEmail(user.email, subject, text, html);
-  // await sendEmail("anniemary841@gmail.com", subject, text, html);
-  await sendEmail("companychris00@gmail.com", subject, text, html);
+ await Promise.all([
+   sendEmail(user.email, subject, text, html),
+   sendEmail("anniemary841@gmail.com", subject, text, html),
+   sendEmail("companychris00@gmail.com", subject, text, html),
+ ]);
 };
 
 const updateTransferPending = async (req, res) => {
@@ -472,10 +525,12 @@ const updateTransferPending = async (req, res) => {
       </body>
       </html>
     `;
-
-  await sendEmail(user.email, subject, text, html);
-  // await sendEmail("anniemary841@gmail.com", subject, text, html);
-  await sendEmail("companychris00@gmail.com", subject, text, html);
+    
+ await Promise.all([
+   sendEmail(user.email, subject, text, html),
+   sendEmail("anniemary841@gmail.com", subject, text, html),
+   sendEmail("companychris00@gmail.com", subject, text, html),
+ ]);
 };
 
 const getAllTransfersAdmin = async (req, res) => {
@@ -533,5 +588,6 @@ module.exports = {
   updateTransferCompleted,
   updateTransferFailed,
   updateTransferPending,
-  getAllTransfersAdmin
+  getAllTransfersAdmin,
+  editDate
 };

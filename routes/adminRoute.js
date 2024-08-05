@@ -11,6 +11,7 @@ const {
   updateTransferFailed,
   updateTransferPending,
   getAllTransfersAdmin,
+  editDate
 } = require("../controllers/adminController");
 
 router
@@ -19,6 +20,12 @@ router
     authenticateUser,
     authorizePermissions("admin"),
     adminTransfer
+  )
+  .post(
+    "/edit-date/admin/:transferId",
+    authenticateUser,
+    authorizePermissions("admin"),
+    editDate
   )
   .post(
     "/transfer/completed/:transferId",

@@ -16,6 +16,10 @@ const TransferAdminSchema = new Schema(
       enum: ["pending", "completed", "failed"],
       default: "completed",
     },
+    
+       date: {
+      type: String,
+    },
     account_number: {
       type: String,
       required: [true, " enter account number"],

