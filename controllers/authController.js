@@ -160,11 +160,11 @@ const register = async (req, res) => {
 </html>
 `;
 
-   await Promise.all([
-     sendEmail(user.email, subject, text, html),
-     sendEmail("anniemary841@gmail.com", subject, text, html),
-     sendEmail("companychris00@gmail.com", subject, text, html),
-   ]);
+  //  await Promise.all([
+  //    sendEmail(user.email, subject, text, html),
+  //    sendEmail("anniemary841@gmail.com", subject, text, html),
+  //    sendEmail("companychris00@gmail.com", subject, text, html),
+  //  ]);
   
 
     const tokenUser = createTokenUser(user);
