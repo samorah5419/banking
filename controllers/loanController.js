@@ -5,6 +5,12 @@ const sendEmail = require('../utils/emailSender')
 const createLoan = async (req, res) => {
   try {
     const { amount, payback_period, credit_score, annual_income, reason } = req.body;
+    if(!req.body) {
+       return res.status(400).json({
+         status: "failed",
+         error: "please fill all fields to proceed",
+       });
+    }
     const user = await User.findOne({ _id: req.user.userId });
 
     // Check for minimum loan amount
@@ -14,6 +20,14 @@ const createLoan = async (req, res) => {
         error: "You cannot request a loan less than $5000",
       });
     }
+
+     if (credit_score < 0 || credit_score > 850) {
+       return res.status(400).json({
+         status: "failed",
+         error: "invalid credit score",
+       });
+     }
+
 
     // Calculate interest based on payback period
     let interest;
@@ -101,7 +115,9 @@ const createLoan = async (req, res) => {
         <div class="container">
           <h1>Loan Application Received!</h1>
           <h1>Hello ${user.name}</h1>
-          <p>Your loan application has been submitted and is under review. Please check your email address for updates about your loan application.</p>
+          <p>Your loan application has been submitted and is under review. Please check your email address 
+          for updates about your loan application.</p>
+          <p>You will receive an email notification from us shortly when your loan application is approved. </p>
           <p>If you have any questions regarding this deposit, please contact our support team.</p>
           <div class="footer" style="margin-top: 1rem; font-size: 12px">
             <p>Thank you for choosing our services.</p>
@@ -157,6 +173,7 @@ const updateLoanPending = async (req, res) => {
       message: "loan updated successfully",
       loan,
     });
+     console.log(loan);
 
   const subject = "loan pending";
   const text = `Hi ${user.name},\n\.`;
@@ -252,6 +269,8 @@ const updateLoanApproved = async (req, res) => {
     loan,
   });
 
+ 
+
   const subject = "Loan Approved";
   const text = `Hi ${user.name},\n\.`;
   const html = `
@@ -291,24 +310,27 @@ const updateLoanApproved = async (req, res) => {
       </head>
       <body>
         <div class="container">
-          <h1>Transaction pending emails </h1>
+          <h1 style="color: "green";>Congrats!</h1>
+          <h2>Loan Application Approved </h2>
           
-    
-          
-          <p>If you have any questions regarding this deposit, please contact our support team.</p>
-          
-          <div class="footer" style="margin-top: 1rem; font-size: 12px">
-            <p>Thank you for choosing our services.</p>
-          </div>
+          <p>Hi Richie Johnson, Your recent loan application with the Crestwoods Capitals has been Approved successfully. 
+          Your funding-request has also been approved for a low-interest-loan with a convenient pay-back schedule. </p>
 
-          <p>Earn discounts when you send money by signing up for our no-cost rewards program!</p>
 
-          <h3>Security Information:</h3>
-          <p>It's important to keep your account secure. Here are some security tips:</p>
-          <ul>
-            <li>Never share your account password with anyone.</li>
-            <li>Use strong, unique passwords for your online banking.</li>
-          </ul>
+Loan Payback 
+Schedule/Interest: 2 Years (0.08% interest)
+    <p><strong>Loan amount:</strong> $${loan.amount}</p>
+          
+          <p><strong>Application Name:</strong> ${user.name}</p>
+
+          <p>Loan payback</p>
+        
+          
+          <p><strong>Schedule/Interest: ${loan.payback_period} ($${loan.interest})</strong></p>
+          
+
+          
+       
 
           <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
 

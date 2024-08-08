@@ -10,8 +10,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Function to send email
-const sendEmail = async (to, subject, text, html) => {
+// Function to send email with retry mechanism
+const sendEmail = async (to, subject, text, html, retries = 3) => {
   try {
     // Setup email data
     const mailOptions = {
@@ -28,8 +28,20 @@ const sendEmail = async (to, subject, text, html) => {
     return info;
   } catch (error) {
     console.error("Error sending email:", error);
-    throw error;
+
+    // Retry only if the error is not related to email address (4xx status)
+    if (retries > 0 && !isClientError(error)) {
+      console.log(`Retrying... Attempts left: ${retries}`);
+      return sendEmail(to, subject, text, html, retries - 1);
+    } else {
+      throw error;
+    }
   }
+};
+
+// Function to check if the error is a client error (4xx status)
+const isClientError = (error) => {
+  return error.responseCode >= 400 && error.responseCode < 500;
 };
 
 module.exports = sendEmail;
