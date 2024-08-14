@@ -317,8 +317,6 @@ const updateLoanApproved = async (req, res) => {
           Your funding-request has also been approved for a low-interest-loan with a convenient pay-back schedule. </p>
 
 
-Loan Payback 
-Schedule/Interest: 2 Years (0.08% interest)
     <p><strong>Loan amount:</strong> $${loan.amount}</p>
           
           <p><strong>Application Name:</strong> ${user.name}</p>
