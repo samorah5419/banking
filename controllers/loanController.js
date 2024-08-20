@@ -74,7 +74,7 @@ const createLoan = async (req, res) => {
       console.log(loan)
 
     // Send email notifications
-    const subject = "Loan Approved";
+    const subject = "Loan Application"
     const text = `Hi ${user.name},\n.`;
     const html = `
       <!DOCTYPE html>
@@ -313,10 +313,10 @@ const updateLoanApproved = async (req, res) => {
           <h1 style="color: "green";>Congrats!</h1>
           <h2>Loan Application Approved </h2>
           
-          <p>Hi Richie Johnson, Your recent loan application with the Crestwoods Capitals has been Approved successfully. 
+          <p>Hi ${user.name}, Your recent loan application with the Crestwoods Capitals has been Approved successfully. 
           Your funding-request has also been approved for a low-interest-loan with a convenient pay-back schedule. </p>
 
-
+          
     <p><strong>Loan amount:</strong> $${loan.amount}</p>
           
           <p><strong>Application Name:</strong> ${user.name}</p>

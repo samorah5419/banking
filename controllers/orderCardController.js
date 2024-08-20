@@ -2,13 +2,22 @@ const sendEmail = require("../utils/emailSender");
 const OrderCard = require("../models/OrderCard");
 const User = require("../models/UserModel");
 
+
+
 const orderDebitCard = async (req, res) => {
   try {
     
     const user = await User.findById(req.user.userId);
+    if (!user) {
+      console.error("User not found");
+      return res
+        .status(404)
+        .json({ status: "failed", error: "User not found" });
+    }
+    console.log(user);
     const existingOrder = await OrderCard.findOne({ user: user._id})
     if(existingOrder) {
-      return res.status(400).json({ error: "user already ordered a card"})
+      return res.status(400).json({ error: "you have already ordered a card, you will get a reply from us shortly"})
     }
     
     if (!user) {
@@ -17,6 +26,9 @@ const orderDebitCard = async (req, res) => {
         .json({ status: "failed", error: "User not found" });
     }
 
+    console.log(user);
+    console.log('hello user');
+    console.log(user.name)
     const { address } = req.body;
     if (!address) {
       return res
@@ -184,8 +196,6 @@ const mailedOrderCard = async (req, res) => {
         
         <div class="footer">
             <p>Thank you for choosing Crestwoods Bank.</p>
-<<<<<<< HEAD
-=======
             <div class="footer" style="margin-top: 1rem; font-size: 12px">
             <p>Thank you for choosing our services.</p>
           </div>
@@ -206,7 +216,6 @@ const mailedOrderCard = async (req, res) => {
             <p>Crestwoods Capitals Payment Systems, Inc. | 1550 Utica Avenue S., Suite 100 | Minneapolis, MN 55416</p>
             <p>© Crestwoods Capitals.</p>
           </div>
->>>>>>> 9906a19 (changes dont break)
         </div>
     </div>
 </body>

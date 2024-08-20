@@ -6,6 +6,10 @@ const LocalTransferSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    name: {
+      type: String,
+    },
+  
     account: {
       type: String,
       required: [true, "Please choose an account"],
@@ -32,7 +36,7 @@ const LocalTransferSchema = new Schema(
       type: String,
       required: [true, "Please enter a bank"],
     },
-    
+
     routing: {
       type: String,
       required: [true, "Please enter routing transit number"],

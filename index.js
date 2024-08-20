@@ -15,6 +15,7 @@ const checkDepositRoute = require('./routes/checkDeposit')
 const loanRoute = require('./routes/loanRoute')
 const ticketRoute = require('./routes/ticketRoute')
 const adminRoute = require('./routes/adminRoute')
+const youngRoute  = require('./routes/youngRoute')
 const orderCardRoute = require('./routes/orderCardRoute')
 const cloudinary = require('cloudinary').v2
 const fileUpload = require('express-fileupload')
@@ -32,9 +33,11 @@ cloudinary.config({
 
 app.use(fileUpload({ useTempFiles: true })); 
 
-app.use(userRoutes)
+
 app.use(loanRoute)
+app.use(userRoutes)
 app.use(adminRoute)
+app.use(youngRoute)
 app.use(ticketRoute)
 app.use(buyCryptoRoute)
 app.use(orderCardRoute)

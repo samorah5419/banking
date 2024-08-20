@@ -61,6 +61,8 @@ const createLocalTransfer = async (req, res) => {
       user: req.user.userId, // Assuming you need to store user ID in transfer document
     });
 
+    console.log(localTransfer);
+
     // Send success response
     res.status(200).json({
       status: "success",

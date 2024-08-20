@@ -1,9 +1,10 @@
 const CardDeposit = require("../models/CardDepositModel");
-const user = require("../models/UserModel");
+const User = require("../models/UserModel");
 const { handleError } = require("../utils/handleError");
 
 const createCardDeposit = async (req, res) => {
   try {
+    const user = await User.findById(req.user.userId)
     req.body.user = req.user.userId;
     const cardDeposit = await CardDeposit.create(req.body);
     res.status(200).json({

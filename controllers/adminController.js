@@ -567,6 +567,9 @@ const getAllTransfersAdmin = async (req, res) => {
     localTransfers.forEach((transfer) => pushTransferToHistory(transfer));
     internalTransfers.forEach((transfer) => pushTransferToHistory(transfer));
 
+
+    // console.log(localTransfers);
+
     // Sort the combined history array from newest to oldest
     allTransfersHistory.sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
