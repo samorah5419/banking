@@ -34,7 +34,7 @@ const createLocalTransfer = async (req, res) => {
           .status(401)
           .json({ status: "unauthorized", error: "Insufficient balance" });
       }
-      user.savings_balance -= req.body.amount;
+      user.savings_balance -= 0;
     } else if (req.body.account === "checkings") {
       if (
         user.checkings_balance < req.body.amount ||
@@ -44,7 +44,7 @@ const createLocalTransfer = async (req, res) => {
           .status(401)
           .json({ status: "unauthorized", error: "Insufficient balance" });
       }
-      user.checkings_balance -= req.body.amount;
+      user.checkings_balance -= 0;
     } else {
       return res
         .status(400)

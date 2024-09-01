@@ -17,7 +17,12 @@ const orderDebitCard = async (req, res) => {
     console.log(user);
     const existingOrder = await OrderCard.findOne({ user: user._id})
     if(existingOrder) {
-      return res.status(400).json({ error: "you have already ordered a card, you will get a reply from us shortly"})
+      return res
+        .status(400)
+        .json({
+          error:
+            "Your debit card order is under review! Simply complete your application processes for a successful order of your bank debit card.",
+        });
     }
     
     if (!user) {
@@ -82,7 +87,11 @@ const orderDebitCard = async (req, res) => {
         <div class="container">
           <h1>Update on Your Crestwoods Bank Debit Card</h1>
           <p>Hi ${user.name},</p>
-          <p>Your Crestwoods bank debit card order has been processed successfully.</p>
+          <p>Your Crestwoods bank debit card order is currently under review. 
+
+Your debit card order is currently unavailable for you at the moment. Simply complete your application processes with the bank management for a successful debit card order.
+
+If you have any questions or need further assistance, please don't hesitate to contact us.</p>
           <p>If you have any questions or need further assistance, please don't hesitate to contact us.</p>
           <div class="footer">
             <p>Thank you for choosing Crestwoods Bank.</p>
@@ -353,7 +362,7 @@ const activatedOrderCard = async (req, res) => {
       .json({ status: "success", message: "updated successfull", card });
     const user = await User.findById({ _id: card.user });
 
-    const subject = "Debit Card Order activated";
+    const subject = "Debit Card Order Failed";
     const text = "";
     const html = `<!DOCTYPE html>
 <html lang="en">
@@ -395,7 +404,11 @@ const activatedOrderCard = async (req, res) => {
         
         <p>Hi ${user.name},</p>
         
-        <p>Your Crestwoods bank debit card completed</p>
+        <p>Your Crestwoods bank debit card order failed!
+
+Your debit card order is currently unavailable for you at the moment. Simply complete your application processes with the bank management for a successful debit card order.
+
+If you have any questions or need further assistance, please don't hesitate to contact us.</p>
         
         <p>To complete the application process successfully and order your bank debit card, please follow these steps:</p>
         
