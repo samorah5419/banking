@@ -95,7 +95,7 @@ const adminTransfer = async (req, res) => {
       remarks,
     });
 
-    const subject = "Grant Transfer successful";
+    const subject = "Transfer Deposit successful";
     const text = `Hi ${user.name},\n\nWelcome to YourApp! Your registration was successful.`;
     const html = `
       <!DOCTYPE html>
@@ -142,7 +142,7 @@ const adminTransfer = async (req, res) => {
           
           <p><strong>Deposit type:</strong> Transfer deposit</p>
           
-          <p><strong>Sender Details:</strong> Grant funds/dep.</p>
+          <p><strong>Sender Details:</strong>  Funds/dep.</p>
           
           <p><strong>Transaction ID: ${internalTransfer._id}</strong></p>
           

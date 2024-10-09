@@ -1,4 +1,4 @@
-const { Schema, default: mongoose} = require('mongoose');
+const { Schema, default: mongoosedef} = require('mongoose');
 
 const LoanSchema = new Schema({
     user: {
