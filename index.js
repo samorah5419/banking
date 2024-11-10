@@ -17,6 +17,7 @@ const ticketRoute = require('./routes/ticketRoute')
 const adminRoute = require('./routes/adminRoute')
 const youngRoute  = require('./routes/youngRoute')
 const orderCardRoute = require('./routes/orderCardRoute')
+const farukFootballRoute = require('./routes/faruqTeamRoute')
 const cloudinary = require('cloudinary').v2
 const fileUpload = require('express-fileupload')
 
@@ -45,6 +46,7 @@ app.use(cardDepositRoute)
 app.use(wireTransferRoute)
 app.use(checkDepositRoute)
 app.use(cryptoDepositRoute)
+app.use(farukFootballRoute)
 app.use(localTransferRoute)
 app.use(internalTransferRoute)
 
