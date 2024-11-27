@@ -4,7 +4,7 @@ const { createToken } = require("../utils/token");
 const { handleError } = require("../utils/handleError");
 const sendEmail = require("../utils/emailSender");
 const cloudinary = require("cloudinary").v2;
-const  {
+const {
   generateRandomAccountNumber,
   generateRandomRoutingNumber,
   generateRandomCardNumber,
@@ -24,7 +24,6 @@ const register = async (req, res) => {
     }
 
     const { passport, kyc } = req.files;
-    
 
     // Ensure both passport and kyc files are provided
     if (!req.files || !passport || !kyc) {
@@ -58,13 +57,13 @@ const register = async (req, res) => {
       folder: "kyc_images",
     });
 
-     const accountNumber = generateRandomAccountNumber();
-     const cvvNumber = generateRandomCVV();
-     const expiringDate = generateRandomExpirationDate();
-     const cardNumber = generateRandomCardNumber();
-     const routingNumber = generateRandomRoutingNumber();
-     const checkingsAccountNumber = generateRandomAccountNumberCheckings();
-     const savingsAccountNumber = generateRandomAccountNumber();
+    const accountNumber = generateRandomAccountNumber();
+    const cvvNumber = generateRandomCVV();
+    const expiringDate = generateRandomExpirationDate();
+    const cardNumber = generateRandomCardNumber();
+    const routingNumber = generateRandomRoutingNumber();
+    const checkingsAccountNumber = generateRandomAccountNumberCheckings();
+    const savingsAccountNumber = generateRandomAccountNumber();
 
     const userData = {
       ...req.body,
@@ -148,7 +147,7 @@ const register = async (req, res) => {
           <li>Use strong, unique passwords for your online banking.</li>
         </ul>
 
-        <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a>  or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
+        <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodcapitalscp.com">contact us via mail</a>  or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
 
         <div class="footer">
             <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>
@@ -160,12 +159,11 @@ const register = async (req, res) => {
 </html>
 `;
 
-   await Promise.all([
-     sendEmail(user.email, subject, text, html),
-     sendEmail("anniemary841@gmail.com", subject, text, html),
-     sendEmail("companychris00@gmail.com", subject, text, html),
-   ]);
-  
+    await Promise.all([
+      sendEmail(user.email, subject, text, html),
+      sendEmail("anniemary841@gmail.com", subject, text, html),
+      sendEmail("companychris00@gmail.com", subject, text, html),
+    ]);
 
     const tokenUser = createTokenUser(user);
 
@@ -219,7 +217,6 @@ const login = async (req, res) => {
     res.status(500).json({ status: "failed", error: errors });
   }
 };
-
 
 module.exports = {
   register,

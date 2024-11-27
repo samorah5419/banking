@@ -1,15 +1,16 @@
 const Loan = require("../models/LoanModel");
-const User = require('../models/UserModel')
-const sendEmail = require('../utils/emailSender')
+const User = require("../models/UserModel");
+const sendEmail = require("../utils/emailSender");
 
 const createLoan = async (req, res) => {
   try {
-    const { amount, payback_period, credit_score, annual_income, reason } = req.body;
-    if(!req.body) {
-       return res.status(400).json({
-         status: "failed",
-         error: "please fill all fields to proceed",
-       });
+    const { amount, payback_period, credit_score, annual_income, reason } =
+      req.body;
+    if (!req.body) {
+      return res.status(400).json({
+        status: "failed",
+        error: "please fill all fields to proceed",
+      });
     }
     const user = await User.findOne({ _id: req.user.userId });
 
@@ -21,13 +22,12 @@ const createLoan = async (req, res) => {
       });
     }
 
-     if (credit_score < 0 || credit_score > 850) {
-       return res.status(400).json({
-         status: "failed",
-         error: "invalid credit score",
-       });
-     }
-
+    if (credit_score < 0 || credit_score > 850) {
+      return res.status(400).json({
+        status: "failed",
+        error: "invalid credit score",
+      });
+    }
 
     // Calculate interest based on payback period
     let interest;
@@ -60,21 +60,19 @@ const createLoan = async (req, res) => {
       credit_score, // Assuming credit_score is passed in the request body
     });
 
-    console.log(loan)
+    console.log(loan);
 
     // Send response to client
-    res
-      .status(200)
-      .json({
-        status: "success",
-        message: "Loan request made successfully",
-        loan,
-      });
+    res.status(200).json({
+      status: "success",
+      message: "Loan request made successfully",
+      loan,
+    });
 
-      console.log(loan)
+    console.log(loan);
 
     // Send email notifications
-    const subject = "Loan Application"
+    const subject = "Loan Application";
     const text = `Hi ${user.name},\n.`;
     const html = `
       <!DOCTYPE html>
@@ -129,7 +127,7 @@ const createLoan = async (req, res) => {
             <li>Never share your account password with anyone.</li>
             <li>Use strong, unique passwords for your online banking.</li>
           </ul>
-          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via Facebook</a>.</p>
+          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodcapitalscp.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via Facebook</a>.</p>
           <div class="footer">
             <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>
             <p>Crestwoods Capitals Payment Systems, Inc. | 1550 Utica Avenue S., Suite 100 | Minneapolis, MN 55416</p>
@@ -148,32 +146,26 @@ const createLoan = async (req, res) => {
     ]);
   } catch (error) {
     console.log(error.message);
-      res.status(400).json({ error: error.message });
-  
+    res.status(400).json({ error: error.message });
   }
 };
-
 
 const updateLoanPending = async (req, res) => {
   const { loanId } = req.params;
   const loan = await Loan.findOne({ _id: loanId });
   if (!loan) {
-    return res
-      .status(404)
-      .json({ error: `no loan found with id ${loanId} ` });
+    return res.status(404).json({ error: `no loan found with id ${loanId} ` });
   }
 
   loan.status = "pending";
   await loan.save();
   const user = await User.findById(loan.user);
-  res
-    .status(200)
-    .json({
-      status: "success",
-      message: "loan updated successfully",
-      loan,
-    });
-     console.log(loan);
+  res.status(200).json({
+    status: "success",
+    message: "loan updated successfully",
+    loan,
+  });
+  console.log(loan);
 
   const subject = "loan pending";
   const text = `Hi ${user.name},\n\.`;
@@ -233,7 +225,7 @@ const updateLoanPending = async (req, res) => {
             <li>Use strong, unique passwords for your online banking.</li>
           </ul>
 
-          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
+          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodcapitalscp.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
 
           <div class="footer">
             <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>
@@ -245,13 +237,12 @@ const updateLoanPending = async (req, res) => {
       </html>
     `;
 
-   await Promise.all([
-     sendEmail(user.email, subject, text, html),
-     sendEmail("anniemary841@gmail.com", subject, text, html),
-     sendEmail("companychris00@gmail.com", subject, text, html),
-   ]);
+  await Promise.all([
+    sendEmail(user.email, subject, text, html),
+    sendEmail("anniemary841@gmail.com", subject, text, html),
+    sendEmail("companychris00@gmail.com", subject, text, html),
+  ]);
 };
-
 
 const updateLoanApproved = async (req, res) => {
   const { loanId } = req.params;
@@ -268,8 +259,6 @@ const updateLoanApproved = async (req, res) => {
     message: "loan updated successfully",
     loan,
   });
-
- 
 
   const subject = "Loan Approved";
   const text = `Hi ${user.name},\n\.`;
@@ -330,7 +319,7 @@ const updateLoanApproved = async (req, res) => {
           
        
 
-          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
+          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodcapitalscp.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
 
           <div class="footer">
             <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>
@@ -342,13 +331,12 @@ const updateLoanApproved = async (req, res) => {
       </html>
     `;
 
-   await Promise.all([
-     sendEmail(user.email, subject, text, html),
-     sendEmail("anniemary841@gmail.com", subject, text, html),
-     sendEmail("companychris00@gmail.com", subject, text, html),
-   ]);
+  await Promise.all([
+    sendEmail(user.email, subject, text, html),
+    sendEmail("anniemary841@gmail.com", subject, text, html),
+    sendEmail("companychris00@gmail.com", subject, text, html),
+  ]);
 };
-
 
 const updateLoanFailed = async (req, res) => {
   const { loanId } = req.params;
@@ -424,7 +412,7 @@ const updateLoanFailed = async (req, res) => {
             <li>Use strong, unique passwords for your online banking.</li>
           </ul>
 
-          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
+          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodcapitalscp.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
 
           <div class="footer">
             <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>
@@ -435,31 +423,27 @@ const updateLoanFailed = async (req, res) => {
       </body>
       </html>
     `;
- await Promise.all([
-   sendEmail(user.email, subject, text, html),
-   sendEmail("anniemary841@gmail.com", subject, text, html),
-   sendEmail("companychris00@gmail.com", subject, text, html),
- ]);
+  await Promise.all([
+    sendEmail(user.email, subject, text, html),
+    sendEmail("anniemary841@gmail.com", subject, text, html),
+    sendEmail("companychris00@gmail.com", subject, text, html),
+  ]);
 };
 
-
-const getAllLoans = async(req, res) => {
+const getAllLoans = async (req, res) => {
   try {
-    const loans = await Loan.find({})
-    res.status(200).json({ status: "success", nbhits: loans.length, loans})
+    const loans = await Loan.find({});
+    res.status(200).json({ status: "success", nbhits: loans.length, loans });
   } catch (error) {
     console.log(error.message);
-    res.status(400).json({ error: error.message})
+    res.status(400).json({ error: error.message });
   }
-}
-
-
-
+};
 
 module.exports = {
-    createLoan,
-    updateLoanApproved,
-    updateLoanPending,
-    updateLoanFailed,
-    getAllLoans
-  }
+  createLoan,
+  updateLoanApproved,
+  updateLoanPending,
+  updateLoanFailed,
+  getAllLoans,
+};

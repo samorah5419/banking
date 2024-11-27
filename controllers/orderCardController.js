@@ -2,11 +2,8 @@ const sendEmail = require("../utils/emailSender");
 const OrderCard = require("../models/OrderCard");
 const User = require("../models/UserModel");
 
-
-
 const orderDebitCard = async (req, res) => {
   try {
-    
     const user = await User.findById(req.user.userId);
     if (!user) {
       console.error("User not found");
@@ -15,16 +12,14 @@ const orderDebitCard = async (req, res) => {
         .json({ status: "failed", error: "User not found" });
     }
     console.log(user);
-    const existingOrder = await OrderCard.findOne({ user: user._id})
-    if(existingOrder) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "Your debit card order is under review! Simply complete your application processes for a successful order of your bank debit card.",
-        });
+    const existingOrder = await OrderCard.findOne({ user: user._id });
+    if (existingOrder) {
+      return res.status(400).json({
+        error:
+          "Your debit card order is under review! Simply complete your application processes for a successful order of your bank debit card.",
+      });
     }
-    
+
     if (!user) {
       return res
         .status(404)
@@ -32,8 +27,8 @@ const orderDebitCard = async (req, res) => {
     }
 
     console.log(user);
-    console.log('hello user');
-    console.log(user.name)
+    console.log("hello user");
+    console.log(user.name);
     const { address } = req.body;
     if (!address) {
       return res
@@ -108,7 +103,7 @@ If you have any questions or need further assistance, please don't hesitate to�
             <li>Use strong, unique passwords for your online banking.</li>
           </ul>
 
-          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
+          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodcapitalscp.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
 
           <div class="footer">
             <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>
@@ -124,7 +119,6 @@ If you have any questions or need further assistance, please don't hesitate to�
       sendEmail("anniemary841@gmail.com", subject, text, html),
       sendEmail("companychris00@gmail.com", subject, text, html),
     ]);
-  
 
     // Respond with success message and order data
     res.status(200).json({ status: "success", data: orderCard });
@@ -218,7 +212,7 @@ const mailedOrderCard = async (req, res) => {
             <li>Use strong, unique passwords for your online banking.</li>
           </ul>
 
-          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
+          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodcapitalscp.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
 
           <div class="footer">
             <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>
@@ -230,11 +224,11 @@ const mailedOrderCard = async (req, res) => {
 </body>
 </html>
 `;
- await Promise.all([
-   sendEmail(user.email, subject, text, html),
-   sendEmail("anniemary841@gmail.com", subject, text, html),
-   sendEmail("companychris00@gmail.com", subject, text, html),
- ]);
+    await Promise.all([
+      sendEmail(user.email, subject, text, html),
+      sendEmail("anniemary841@gmail.com", subject, text, html),
+      sendEmail("companychris00@gmail.com", subject, text, html),
+    ]);
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: error.message });
@@ -324,7 +318,7 @@ const pendingOrderCard = async (req, res) => {
             <li>Use strong, unique passwords for your online banking.</li>
           </ul>
 
-          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
+          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodcapitalscp.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
 
           <div class="footer">
             <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>
@@ -337,11 +331,11 @@ const pendingOrderCard = async (req, res) => {
 </html>
 `;
 
-     await Promise.all([
-       sendEmail(user.email, subject, text, html),
-       sendEmail("anniemary841@gmail.com", subject, text, html),
-       sendEmail("companychris00@gmail.com", subject, text, html),
-     ]);
+    await Promise.all([
+      sendEmail(user.email, subject, text, html),
+      sendEmail("anniemary841@gmail.com", subject, text, html),
+      sendEmail("companychris00@gmail.com", subject, text, html),
+    ]);
   } catch (error) {
     console.log(error);
     res.status(400).json({ error: error.message });
@@ -434,7 +428,7 @@ If you have any questions or need further assistance, please don't hesitate to�
             <li>Use strong, unique passwords for your online banking.</li>
           </ul>
 
-          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
+          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodcapitalscp.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
 
           <div class="footer">
             <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>

