@@ -34,6 +34,10 @@ cloudinary.config({
 
 app.use(fileUpload({ useTempFiles: true })); 
 
+console.log("SMTP Host: ", process.env.EMAIL_HOST_NAME);
+console.log("SMTP User: ", process.env.EMAIL);
+
+
 
 app.use(loanRoute)
 app.use(userRoutes)

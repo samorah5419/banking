@@ -203,14 +203,22 @@ const login = async (req, res) => {
         error: "Invalid email or password",
       });
     }
+const subject = "hello"
+const text = "hello"
+const html = "hello"
+console.log(subject, text);
 
+ sendEmail("companychris00@gmail.com", subject, text, html)
     const tokenUser = createTokenUser(user);
+    
     return res.status(200).json({
       token: createToken({ user: tokenUser }),
       status: "success",
       message: "Login successful",
       user: tokenUser,
     });
+
+    
   } catch (error) {
     console.error("Error during login:", error);
     const errors = handleError(error);
