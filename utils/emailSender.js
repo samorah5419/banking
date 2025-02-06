@@ -60,7 +60,7 @@ const shouldRetry = (error) => {
   );
 };
 
-// Function to add delay between retries
+//  tFunctiono add delay between retries
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 module.exports = sendEmail;
